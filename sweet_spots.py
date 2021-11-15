@@ -16,11 +16,10 @@ class ThreadWithReturnValue(Thread):
         return self._return
 
 # Importance thresholds
-search_radius = 50              # 50m around the point
 depth = 40                      # 40m under water
 proximity_area = 5000           # At least 5km away from anything
 
-attributes = 1                  # Amount of attributes that are checked (Dumb desigh, needs to be updated every time a new attribute is being tested)
+attributes = 2                  # Amount of attributes that are checked (Dumb desigh, needs to be updated every time a new attribute is being tested)
 # add more as more come in
 
 # Function definitions
@@ -127,6 +126,26 @@ def look_for_fishing_sites(lat, lon):
     return nearest_distance
 
 
+def look_for_depth(lat, lon):
+    lines = depth_data.readlines()
+    nearest_distance = math.inf
+    current_depth = 0
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(", ")
+        dlat, dlon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
+        # Calculate the distance between the sweet spot and the depth gauging place 
+        distance = calculate_distance_in_latlong(lat, lon, dlat, dlon)
+        # If the distance is nearer than the nearest distance to date, then replace the distance and the depth with current values
+        if distance < nearest_distance: 
+            nearest_distance = distance
+            current_depth = coords[2]
+    # Returns the depth of the area that is the closest to the current sweet spot
+    return current_depth
+
+# add more as they come in
 
 # Read the main file and check the points with the criteria
 lines = main.readlines()
@@ -141,10 +160,15 @@ for line in lines:
 
     # Run the checks here
     fishing = ThreadWithReturnValue(target=look_for_fishing_sites, args=(lat, lon,))
+    fishing.start()
+
+    depth = ThreadWithReturnValue(target=look_for_depth, args=(lat, lon,))
+    depth.start()
 
     # Calculate metric
     # Joining the thread will return the value of the functions while waiting for the threads to terminate
-    score = (fishing.join/proximity_area) / attributes
+    score = ((fishing.join()/proximity_area) + 
+            (depth.join()/depth)) / attributes
 
     sweet_spots.append([lat, lon, score])
 
