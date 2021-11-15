@@ -1,0 +1,156 @@
+.HODE
+..TEGNSETT ANSI
+..TRANSPAR 
+...KOORDSYS 23
+...ENHET 0.01
+...ORIGO-NØ 0 0
+..OMRÅDE 
+...MIN-NØ 7042512 268453
+...MAX-NØ 7052734 276814
+..SOSI-VERSJON 4.5
+..PRODUSENT "Asplan Viak Internet A/S"
+.KURVE 1:
+..NAVN "Trondheim havn 1                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..NØ
+704282564 26886571
+704255969 26877134
+704264119 26845391
+704297148 26853970
+704282564 26886571 ...KP 1
+.FLATE 2:
+..NAVN "Trondheim havn 1                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..REF :1
+..NØH
+704273341 26865542 0 ...KP 1
+.KURVE 3:
+..NAVN "Trondheim havn 2                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..NØ
+704301867 26969359
+704251250 26965069
+704254682 26933756
+704304870 26935043
+704301867 26969359 ...KP 1
+.FLATE 4:
+..NAVN "Trondheim havn 2                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..REF :3
+..NØH
+704278274 26950860 0 ...KP 1
+.KURVE 5:
+..NAVN "Trondheim havn 4                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..NØ
+704373503 27074453
+704331465 27052147
+704375647 27042281
+704373503 27074453 ...KP 1
+.FLATE 6:
+..NAVN "Trondheim havn 4                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..REF :5
+..NØH
+704352484 27055377 0 ...KP 1
+.KURVE 7:
+..NAVN "Trondheim havn 4                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..NØ
+704468302 27088609
+704424119 27082603
+704429696 27046142
+704471304 27051718
+704468302 27088609 ...KP 1
+.FLATE 8:
+..NAVN "Trondheim havn 4                                  "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Sør-Trøndelag                                     "
+..KOMMUNE "Trondheim                                         "
+..INFORMASJON                                                                                                     
+..REF :7
+..NØH
+704448999 27067357 0 ...KP 1
+.KURVE 9:
+..NAVN "Strindfjorden/Trondheimsfjorden                   "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Nord-Trøndelag                                    "
+..KOMMUNE "Leksvik                                           "
+..INFORMASJON                                                                                                     
+..NØ
+705118482 27681343
+704961570 27313365
+705143476 27214775
+705273310 27554981
+705118482 27681343 ...KP 1
+.FLATE 10:
+..NAVN "Strindfjorden/Trondheimsfjorden                   "
+..ANKRING_ID 0                             
+..ANKRINGSTYPE 3                             
+..ANKRINGSKLASSE 0                             
+..FTEMA 4619
+..KYV_REGION "Midt-Norge                    "
+..FYLKE "Nord-Trøndelag                                    "
+..KOMMUNE "Leksvik                                           "
+..INFORMASJON                                                                                                     
+..REF :9
+..NØH
+705040026 27384099 0 ...KP 1
+.SLUTT ! Slutt på data

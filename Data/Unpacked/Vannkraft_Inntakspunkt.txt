@@ -1,0 +1,12 @@
+﻿objektType;vannveiID;hoyde;inntakType;inntakFunksjon;status;idriftsattAar;kdbNr;konsesjonStatus;konsesjonStatusDato;spID;delfeltNr;vannkraftverkNr;vannkraftverkNavn;oppdateringsdato;lokalID;dataUttaksdato;eksportType;koordinatsystem;X;Y
+Inntakspunkt;1460;101.00; ; ;D;1957;;;;;1330;87;Fjæremsfoss;;0c7d56a1-218d-4fdf-aa2f-b4fd863d5909;20211115;NVEs nedlastningsløsning;EPSG:25833;271555.96;7029563.29
+Inntakspunkt;1458;161.00;Magasininntak; ;D;1940;;;;;2195;415;Svean;;77b17132-b19d-40b2-9103-1861617477bf;20211115;NVEs nedlastningsløsning;EPSG:25833;275446.42;7022637.43
+Inntakspunkt;;75.00;Bekkeinntak;Hoved;D;2008;2818;5;20060317;;2728;1408;Leirfossene;;d1e9ba58-948a-4983-874d-69e5dfdb10a5;20211115;NVEs nedlastningsløsning;EPSG:25833;270591.38;7035310.72
+Inntakspunkt;0;149.00; ; ;D;1977;3701;;20140307;;;38;Bratsberg;;5ed5252a-4818-4d1b-aa27-ded2aa31b589;20211115;NVEs nedlastningsløsning;EPSG:25833;277519.53;7031614.86
+Inntakspunkt;;306.00;;Hoved;V;;4320;6;20130627;;;;;;6ca08ecc-769a-4cb0-be53-12421251898a;20211115;NVEs nedlastningsløsning;EPSG:25833;275660.95;7019468.81
+Inntakspunkt;1462;64.00;Bekkeinntak;Hoved;D;2008;2818;5;20060317;;;516;Øvre Leirfoss;;ef92d279-ece7-45b1-92d1-70be0df65afc;20211115;NVEs nedlastningsløsning;EPSG:25833;270547.41;7035320.42
+Inntakspunkt;1457;189.00; ; ;D;1926;;;;;3178;259;Løkaunet;;119e1b28-b869-48ae-ab44-ffa8156b8c77;20211115;NVEs nedlastningsløsning;EPSG:25833;272484.41;7022311.66
+Inntakspunkt;;237.00;;Hoved;P2;;3995;13;20040705;;;;;;ce2231ca-22b6-4279-bca8-1fc6c43fe604;20211115;NVEs nedlastningsløsning;EPSG:25833;275416.0;7028982.0
+Inntakspunkt;0;157.00;Magasininntak; ;D;1977;3701;;20140307;;;38;Bratsberg;;06a9489f-d062-4ec3-85d3-35f8af2614d2;20211115;NVEs nedlastningsløsning;EPSG:25833;277590.77;7023830.53
+Inntakspunkt;1461;37.00;Bekkeinntak;Hoved;D;2014;2818;5;20060317;;1966;295;Nedre Leirfoss;;c138bf93-5e42-472b-9a0a-5eab60180190;20211115;NVEs nedlastningsløsning;EPSG:25833;270064.23;7036349.49
+Inntakspunkt;;312.00;;Hoved;V;;4319;0;20190319;;;;;;d03394ec-3b39-41ff-be05-f378ce72ce7b;20211115;NVEs nedlastningsløsning;EPSG:25833;273530.47;7019645.44

@@ -1,0 +1,2 @@
+﻿objektType;saksTittel;saksKategori;dataUttaksdato;eksportType;koordinatsystem;X;Y
+Vindturbin;Rye Vind;;20211115;NVEs nedlastningsløsning;EPSG:25833;256410.441;7041430.8361
