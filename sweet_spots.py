@@ -18,8 +18,6 @@ class ThreadWithReturnValue(Thread):
 # Importance thresholds
 depth = 40                      # 40m under water
 proximity_area = 5000           # At least 5km away from anything
-
-attributes = 2                  # Amount of attributes that are checked (Dumb desigh, needs to be updated every time a new attribute is being tested)
 # add more as more come in
 
 # Function definitions
@@ -167,12 +165,13 @@ for line in lines:
 
     # Calculate metric
     # Joining the thread will return the value of the functions while waiting for the threads to terminate
+    # This calculation takes the average of the results from the checks. The calculations are set up so that
+    # result values less than 1 are bad, and values more than 1 are good for the spot. This means that the 
+    # higher the end score, the better of a spot it is for the sweet spot.
     score = ((fishing.join()/proximity_area) + 
-            (depth.join()/depth)) / attributes
+            (depth.join()/depth)) / 2
 
     sweet_spots.append([lat, lon, score])
-
-
 
 # Save the points in a new file
 potential_sweet_spot_locations = open("DataScience/DataScienceProject/potential_sweet_spots.txt", "a")
