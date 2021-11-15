@@ -1,0 +1,10 @@
+﻿275364, 7029152.0, Solheimsbekken mikrokraftverk
+273012.62, 7024714.86, Svean
+274840.17, 7020628.77, Brunga kraftverk
+270028.9, 7036399.49, Nedre Leirfoss
+270320.45, 7035319.13, Leirfossene
+272396.9342, 7033552.2631, Bratsberg
+272205.78, 7023539.4, Løkaunet
+281221.93, 7022407.18, Tangvella kraftverk
+270493.56, 7035363.08, Øvre Leirfoss 
+271522.17, 7029599.38, Fjæremsfoss
