@@ -1,0 +1,12 @@
+.HODE
+..TEGNSETT ANSI
+..TRANSPAR 
+...KOORDSYS 23
+...ENHET 0.01
+...ORIGO-NØ 0 0
+..OMRÅDE 
+...MIN-NØ -500 -500
+...MAX-NØ 500 500
+..SOSI-VERSJON 4.5
+..PRODUSENT "Asplan Viak Internet A/S"
+.SLUTT ! Slutt på data

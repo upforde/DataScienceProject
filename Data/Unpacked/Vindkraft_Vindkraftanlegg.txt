@@ -1,0 +1,3 @@
+﻿objektType;saksID;saksTittel;tiltakshaver;saksKategori;status;effekt_MW;forventetProduksjon_Gwh;saksLenke;kommunenavn;fylkesnavn;idriftDato;utAvDriftDato;totaltAntTurbiner;dataUttaksdato;eksportType;koordinatsystem;X;Y
+Vindkraftverk;;Rye Vind;LARS HOEM;;D;;0.30;;Trondheim;Trøndelag;20151109;;1;20211115;NVEs nedlastningsløsning;EPSG:25833;256438.7184;7041468.374
+Vindkraftverk;223;Brungfjellet vindkraftverk;TRØNDERENERGI KRAFT AS;4;FJ;150.00;510.00;https://www.nve.no/konsesjon/konsesjonssaker/konsesjonssak?type=A-6&id=223;Trondheim;Trøndelag;;;;20211115;NVEs nedlastningsløsning;EPSG:25833;277913.7775;7014998.0594
