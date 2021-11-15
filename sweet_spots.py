@@ -15,9 +15,11 @@ class ThreadWithReturnValue(Thread):
         Thread.join(self)
         return self._return
 
-# Importance thresholds
+# Importance thresholds (These are all subject to change)
 depth = 40                      # 40m under water
 proximity_area = 5000           # At least 5km away from anything
+power_proximity = 50000         # Best if at most 50km away, but not a problem otherwise
+
 # add more as more come in
 
 # Function definitions
@@ -98,13 +100,20 @@ def isUMT(lat, lon):
     elif lat < -360 and lon < -360: return True
     return False
 
-# Open the databases
-main = open("DataScience/DataScienceProject/processed data/potential_points.gml", "r")
-fish_data = open("DataScience/DataScienceProject/processed data/processed_kv_eiendom_kompleks.gml", "r")
+# Open the datasets
+
+# TODO: Insert actual filepaths here!!!
+main = open("insert path to file here", "r")
+fish_data = open("insert path to file here", "r")
 depth_data = open("insert path to file here", "r")
+water_power_data = open("insert path to file here", "r")
+wind_power_data = open("insert path to file here", "r")
+
 # add more as more come in
 
 # Actual searching functions
+
+# Many of these functions can be written better, or at least more generically, but I really can't right now, too tired to think about that
 def look_for_fishing_sites(lat, lon):
     lines = fish_data.readlines()
     nearest_distance = math.inf
@@ -122,7 +131,6 @@ def look_for_fishing_sites(lat, lon):
         if distance < nearest_distance: nearest_distance = distance
     # Return the distance to closest site so that a score can be calculated out of it
     return nearest_distance
-
 
 def look_for_depth(lat, lon):
     lines = depth_data.readlines()
@@ -143,14 +151,43 @@ def look_for_depth(lat, lon):
     # Returns the depth of the area that is the closest to the current sweet spot
     return current_depth
 
+def look_for_water_power(lat, lon):
+    lines = water_power_data.readlines()
+    nearest_distance = math.inf
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(", ")
+        wlat, wlon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon) 
+        # Calculate the distance between the point and the water power site
+        distance = calculate_distance_in_latlong(lat, lon, wlat, wlon)
+        if distance < nearest_distance: nearest_distance = distance
+    # Return the distance to closest site so that a score can be calculated out of it
+    return nearest_distance
+
+def look_for_wind_power(lat, lon):
+    lines = wind_power_data.readlines()
+    nearest_distance = math.inf
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(", ")
+        wlat, wlon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon) 
+        # Calculate the distance between the point and the wind power site
+        distance = calculate_distance_in_latlong(lat, lon, wlat, wlon)
+        if distance < nearest_distance: nearest_distance = distance
+    # Return the distance to closest site so that a score can be calculated out of it
+    return nearest_distance
+
 # add more as they come in
 
 # Read the main file and check the points with the criteria
 lines = main.readlines()
-
+# Array that will be filled with the sweetspots in the main file and their scores
 sweet_spots = []
-# Here relying on the point coordinates being one point per line, and 
-# the points being in lat lon format
+# Here relying on the point coordinates being one point per line
 for line in lines:
     coords = line.split(", ")
     lat, lon = coords[0], coords[1]
@@ -163,15 +200,34 @@ for line in lines:
     depth = ThreadWithReturnValue(target=look_for_depth, args=(lat, lon,))
     depth.start()
 
-    # Calculate metric
-    # Joining the thread will return the value of the functions while waiting for the threads to terminate
-    # This calculation takes the average of the results from the checks. The calculations are set up so that
-    # result values less than 1 are bad, and values more than 1 are good for the spot. This means that the 
-    # higher the end score, the better of a spot it is for the sweet spot.
-    score = ((fishing.join()/proximity_area) + 
-            (depth.join()/depth)) / 2
+    water_power = ThreadWithReturnValue(target=look_for_water_power, args=(lat, lon,))
+    water_power.start()
 
-    sweet_spots.append([lat, lon, score])
+    wind_power = ThreadWithReturnValue(target=look_for_wind_power, args=(lat, lon,))
+    wind_power.start()
+
+    # Calculate metrics
+
+    # Setting the scores between 0 and 2, where below 1 is bad, and above 1 is good
+
+    # Don't know atm if I should keep the thing 0-2 thing, can't come up with anything better right now tho
+    # I can see several issues with the approach that I've come up with here, but just like Fermat, I won't
+    # comment on them or explain them here. You gotto figure it out or ask me in person
+    fishing_score = fishing.join()/proximity_area if fishing.join()/proximity_area < 2 else 2
+
+    depth_score = depth.join()/depth if depth.join()/depth < 2 else 2
+
+    water_power_score = 2 - water_power.join()/power_proximity
+    if water_power_score < 0: water_power_score = 0
+
+    wind_power_score = 2 - wind_power.join()/power_proximity
+    if wind_power_score < 0: wind_power_score = 0
+
+    # This calculation takes the average of the results from the checks. The calculations are set up so that
+    # result values less than 1 are bad, and values more than 1 are good for the spot.
+    overall_score = (fishing_score + depth_score + water_power_score + wind_power_score) / 4
+
+    sweet_spots.append([lat, lon, overall_score])
 
 # Save the points in a new file
 potential_sweet_spot_locations = open("DataScience/DataScienceProject/potential_sweet_spots.txt", "a")
