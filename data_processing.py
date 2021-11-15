@@ -15,6 +15,8 @@ with open(sys.argv[1]) as f:
         # if "" in line:
         #     new_file.write(line.split("")[1][1:-2] + "\n")
 
+        # Add other stuff that is geared towards any data
+
         if "<gml:posList>" in line:
             new_file.write(line.split("gml:posList")[1][1:-2] + "\n")
 
