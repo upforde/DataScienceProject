@@ -1,4 +1,4 @@
-﻿275364, 7029152.0, Solheimsbekken mikrokraftverk
+﻿275364.0, 7029152.0, Solheimsbekken mikrokraftverk
 273012.62, 7024714.86, Svean
 274840.17, 7020628.77, Brunga kraftverk
 270028.9, 7036399.49, Nedre Leirfoss
