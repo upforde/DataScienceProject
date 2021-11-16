@@ -300,32 +300,6 @@ for line in lines:
     dam_power_score = 2 - dam_power_result/power_proximity
     if dam_power_score < 0: dam_power_score = 0
 
-    # fishing_result = look_for_fishing_sites(lat, lon)
-    # depth_result = look_for_depth(lat, lon)
-    # incidents_result = look_for_incidents(lat, lon)
-    # corals_result = look_for_coral(lat, lon)
-    # water_power_result = look_for_water_power(lat, lon)
-    # wind_power_result = look_for_wind_power(lat, lon)
-    # dam_power_result = look_for_damn_power(lat, lon)
-
-    # fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
-
-    # depth_score = depth_result/depth_threshold if depth_result/depth_threshold < 2 else 2
-
-    # incident_score = incidents_result/incident_proximity if incidents_result/incident_proximity < 2 else 2
-
-    # coral_score = corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
-
-    # water_power_score = 2 - water_power_result/power_proximity
-    # if water_power_score < 0: water_power_score = 0
-
-    # wind_power_score = 2 - wind_power_result/power_proximity
-    # if wind_power_score < 0: wind_power_score = 0
-
-    # dam_power_score = 2 - dam_power_result/power_proximity
-    # if dam_power_score < 0: dam_power_score = 0
-
-
     # ankering_score = something here
     # military_nono_score = something here
     # military_training_score = something here
