@@ -248,14 +248,40 @@ for line in lines:
     lat, lon = float(coords[0]), float(coords[1])
     if (isUMT(lat, lon)): lat, lon = utmToLatLng(lat, lon)
 
-    # Run the checks here
-    fishing_result = look_for_fishing_sites(lat, lon)
-    depth_result = look_for_depth(lat, lon)
-    incidents_result = look_for_incidents(lat, lon)
-    corals_result = look_for_coral(lat, lon)
-    water_power_result = look_for_water_power(lat, lon)
-    wind_power_result = look_for_wind_power(lat, lon)
-    dam_power_result = look_for_damn_power(lat, lon)
+    #Run the checks here
+    pool = ThreadPool(processes=7)
+
+    fishing = pool.apply_async(look_for_fishing_sites, (lat, lon))
+
+    depth = pool.apply_async(look_for_depth, (lat, lon))
+
+    incidents = pool.apply_async(look_for_incidents, (lat, lon))
+
+    corals = pool.apply_async(look_for_coral, (lat, lon))
+
+    water_power = pool.apply_async(look_for_water_power, (lat, lon))
+
+    wind_power = pool.apply_async(look_for_water_power, (lat, lon))
+
+    dam_power = pool.apply_async(look_for_damn_power, (lat, lon))
+
+    # ankering = ThreadWithReturnValue(target=look_for_ankering, args=(lat, lon))
+    # ankering.start()
+
+    # military_nono = ThreadWithReturnValue(target=look_for_military_nono, args=(lat, lon))
+    # military_nono.start()
+
+    # military_training = ThreadWithReturnValue(target=look_for_military_training, args=(lat, lon))
+    # military_training.start()
+
+    # Calculate metrics
+
+    # Setting the scores between 0 and 2, where below 1 is bad, and above 1 is good
+
+    # Don't know atm if I should keep the thing 0-2 thing, can't come up with anything better right now tho
+    # I can see several issues with the approach that I've come up with here, but just like Fermat, I won't
+    # comment on them or explain them here. You gotto figure it out or ask me in person
+    fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get()
 
     fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
 
@@ -273,6 +299,32 @@ for line in lines:
 
     dam_power_score = 2 - dam_power_result/power_proximity
     if dam_power_score < 0: dam_power_score = 0
+
+    # fishing_result = look_for_fishing_sites(lat, lon)
+    # depth_result = look_for_depth(lat, lon)
+    # incidents_result = look_for_incidents(lat, lon)
+    # corals_result = look_for_coral(lat, lon)
+    # water_power_result = look_for_water_power(lat, lon)
+    # wind_power_result = look_for_wind_power(lat, lon)
+    # dam_power_result = look_for_damn_power(lat, lon)
+
+    # fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
+
+    # depth_score = depth_result/depth_threshold if depth_result/depth_threshold < 2 else 2
+
+    # incident_score = incidents_result/incident_proximity if incidents_result/incident_proximity < 2 else 2
+
+    # coral_score = corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
+
+    # water_power_score = 2 - water_power_result/power_proximity
+    # if water_power_score < 0: water_power_score = 0
+
+    # wind_power_score = 2 - wind_power_result/power_proximity
+    # if wind_power_score < 0: wind_power_score = 0
+
+    # dam_power_score = 2 - dam_power_result/power_proximity
+    # if dam_power_score < 0: dam_power_score = 0
+
 
     # ankering_score = something here
     # military_nono_score = something here
