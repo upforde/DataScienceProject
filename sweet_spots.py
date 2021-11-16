@@ -90,24 +90,10 @@ def isUMT(lat, lon):
     elif lat < -360 and lon < -360: return True
     return False
 
-# Open the datasets
-main = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/sweet_spots.txt", "r", encoding='utf-8-sig')
-
-fish_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_kv_eiendom_kompleks.gml", "r", encoding='utf-8-sig')
-depth_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_Depth", "r", encoding='utf-8-sig')
-incidents_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_vts_hendelser.gml", "r", encoding='utf-8-sig')
-coral_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_CoralReef", "r", encoding='utf-8-sig')
-water_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_Vannkraftverk.txt", "r", encoding='utf-8-sig')
-wind_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vindkraft_Vindkraftanlegg.txt", "r", encoding='utf-8-sig')
-damn_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_DamPunkt.txt", "r", encoding='utf-8-sig')
-# ankering_data = open("DataScience/DataScienceProject/processed data/kyv_ankringsomraderflate.sos", "r", encoding='utf-8-sig')
-# military_nono_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryNoNoZones", "r", encoding='utf-8-sig')
-# military_training_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryTrainingZones", "r", encoding='utf-8-sig')
-# add more as more come in
-
 # Actual searching functions
 # Many of these functions can be written better, or at least more generically, but I really can't right now, too tired to think about that
 def look_for_fishing_sites(lat, lon):
+    fish_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_kv_eiendom_kompleks.gml", "r", encoding='utf-8-sig')
     lines = fish_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -118,14 +104,13 @@ def look_for_fishing_sites(lat, lon):
         if (isUMT(flat, flon)): flat, flon = utmToLatLng(flat, flon) 
         # Calculate the distance between the point and the phishing site
         distance = calculate_distance_in_latlong(lat, lon, flat, flon)
-        # If it's too near, based on the proximity attribute, then stop the function and return the proximity
-        if distance < proximity_area: return distance
         # If it's not too close, then keep finding the closest site
         if distance < nearest_distance: nearest_distance = distance
     # Return the distance to closest site so that a score can be calculated out of it
     return nearest_distance
 
 def look_for_depth(lat, lon):
+    depth_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_Depth", "r", encoding='utf-8-sig')
     lines = depth_data.readlines()
     nearest_distance = math.inf
     current_depth = 0
@@ -146,6 +131,7 @@ def look_for_depth(lat, lon):
     return current_depth
 
 def look_for_incidents(lat, lon):
+    incidents_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_vts_hendelser.gml", "r", encoding='utf-8-sig')
     lines = incidents_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -164,6 +150,7 @@ def look_for_incidents(lat, lon):
     return nearest_distance
 
 def look_for_coral(lat, lon):
+    coral_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_CoralReef", "r", encoding='utf-8-sig')
     lines = coral_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -182,6 +169,7 @@ def look_for_coral(lat, lon):
     return nearest_distance
 
 def look_for_water_power(lat, lon):
+    water_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_Vannkraftverk.txt", "r", encoding='utf-8-sig')
     lines = water_power_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -197,6 +185,7 @@ def look_for_water_power(lat, lon):
     return nearest_distance
 
 def look_for_wind_power(lat, lon):
+    wind_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vindkraft_Vindkraftanlegg.txt", "r", encoding='utf-8-sig')
     lines = wind_power_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -212,6 +201,7 @@ def look_for_wind_power(lat, lon):
     return nearest_distance
 
 def look_for_damn_power(lat, lon):
+    damn_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_DamPunkt.txt", "r", encoding='utf-8-sig')
     lines = damn_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -227,12 +217,14 @@ def look_for_damn_power(lat, lon):
     return nearest_distance
 
 # def look_for_ankering(lat, lon):
+#     ankering_data = open("DataScience/DataScienceProject/processed data/kyv_ankringsomraderflate.sos", "r", encoding='utf-8-sig')
 #     lines = ankering_data.readlines()
 #     for line in lines:
 #         return
 #     return
 
 # def look_for_military_nono(lat, lon):
+#     military_nono_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryNoNoZones", "r", encoding='utf-8-sig')
 #     lines = military_nono_zones.readlines()
 #     newarest_distance = math.inf
 #     for line in lines:
@@ -240,11 +232,13 @@ def look_for_damn_power(lat, lon):
 #     return
 
 # def look_for_military_training(lat, lon):
+#     military_training_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryTrainingZones", "r", encoding='utf-8-sig')
 #     return
 
 # add more as they come in
 
 # Read the main file and check the points with the criteria
+main = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/sweet_spots.txt", "r", encoding='utf-8-sig')
 lines = main.readlines()
 # Array that will be filled with the sweetspots in the main file and their scores
 sweet_spots = []
@@ -255,39 +249,13 @@ for line in lines:
     if (isUMT(lat, lon)): lat, lon = utmToLatLng(lat, lon)
 
     # Run the checks here
-    pool = ThreadPool(processes=7)
-
-    fishing = pool.apply_async(look_for_fishing_sites, (lat, lon))
-
-    depth = pool.apply_async(look_for_depth, (lat, lon))
-
-    incidents = pool.apply_async(look_for_incidents, (lat, lon))
-
-    corals = pool.apply_async(look_for_coral, (lat, lon))
-
-    water_power = pool.apply_async(look_for_water_power, (lat, lon))
-
-    wind_power = pool.apply_async(look_for_water_power, (lat, lon))
-
-    dam_power = pool.apply_async(look_for_damn_power, (lat, lon))
-
-    # ankering = ThreadWithReturnValue(target=look_for_ankering, args=(lat, lon))
-    # ankering.start()
-
-    # military_nono = ThreadWithReturnValue(target=look_for_military_nono, args=(lat, lon))
-    # military_nono.start()
-
-    # military_training = ThreadWithReturnValue(target=look_for_military_training, args=(lat, lon))
-    # military_training.start()
-
-    # Calculate metrics
-
-    # Setting the scores between 0 and 2, where below 1 is bad, and above 1 is good
-
-    # Don't know atm if I should keep the thing 0-2 thing, can't come up with anything better right now tho
-    # I can see several issues with the approach that I've come up with here, but just like Fermat, I won't
-    # comment on them or explain them here. You gotto figure it out or ask me in person
-    fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get()
+    fishing_result = look_for_fishing_sites(lat, lon)
+    depth_result = look_for_depth(lat, lon)
+    incidents_result = look_for_incidents(lat, lon)
+    corals_result = look_for_coral(lat, lon)
+    water_power_result = look_for_water_power(lat, lon)
+    wind_power_result = look_for_wind_power(lat, lon)
+    dam_power_result = look_for_damn_power(lat, lon)
 
     fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
 
