@@ -1,36 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gml:FeatureCollection xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:app="http://skjema.geonorge.no/SOSI/produktspesifikasjon/Korallrev/20150408/" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="idc0cc613e-d2aa-4b31-a3b3-fb899ee43678" xsi:schemaLocation="http://skjema.geonorge.no/SOSI/produktspesifikasjon/Korallrev/20150408/ http://skjema.geonorge.no/SOSI/produktspesifikasjon/Korallrev/20150408/Korallrev.xsd">
-<gml:boundedBy>
-<gml:Envelope srsName="urn:ogc:def:crs:EPSG::25833" srsDimension="2">
-<gml:lowerCorner>-132756.312872423 6546270.87834073</gml:lowerCorner>
-<gml:upperCorner>789409.130116941 7884983.13728356</gml:upperCorner>
-</gml:Envelope>
-</gml:boundedBy>
-<gml:featureMember><app:Korallrev gml:id="ida878a00f-88bb-4d1b-95be-a378e17c8f3d">
-<app:identifikasjon>
-<app:Identifikasjon>
-<app:lokalId>e63accf8-12d2-4b6b-a31c-74ae300113a4</app:lokalId>
-<app:navnerom>http://skjema.geonorge.no/SOSI/produktspesifikasjon/Korallrev/20150408</app:navnerom>
-<app:versjonId>20150408</app:versjonId>
-</app:Identifikasjon>
-</app:identifikasjon>
-<app:kvalitet>
-<app:Posisjonskvalitet>
-<app:målemetode>70</app:målemetode>
-</app:Posisjonskvalitet>
-</app:kvalitet>
-<app:medium>S</app:medium>
-<app:opphav>Institute of marine research (2011)</app:opphav>
-<app:nøyaktighetsklasse>3</app:nøyaktighetsklasse>
-<app:registreringsversjon>
-<app:Registreringsversjon>
-<app:produkt>Korallrev</app:produkt>
-<app:versjon>20201201</app:versjon>
-</app:Registreringsversjon>
-</app:registreringsversjon>
-<app:minimumsdybde>0</app:minimumsdybde>
-<app:maksimumsdybde>0</app:maksimumsdybde>
-<app:posisjon>
+
 <gml:Point gml:id="ida878a00f-88bb-4d1b-95be-a378e17c8f3d-0" srsName="urn:ogc:def:crs:EPSG::25833" srsDimension="2">
 <gml:pos>474578.699414397 7646865.10365518</gml:pos>
 </gml:Point>
@@ -70,6 +38,7 @@
 <app:minimumsdybde>0</app:minimumsdybde>
 <app:maksimumsdybde>0</app:maksimumsdybde>
 <app:posisjon>
+
 <gml:Point gml:id="idf0401c16-9eb7-4f62-a462-db70df33d897-0" srsName="urn:ogc:def:crs:EPSG::25833" srsDimension="2">
 <gml:pos>475142.577597772 7645478.74282893</gml:pos>
 </gml:Point>
@@ -109,6 +78,7 @@
 <app:minimumsdybde>0</app:minimumsdybde>
 <app:maksimumsdybde>0</app:maksimumsdybde>
 <app:posisjon>
+
 <gml:Point gml:id="idd5c4f539-d92b-4e59-af6f-b040bffb80ba-0" srsName="urn:ogc:def:crs:EPSG::25833" srsDimension="2">
 <gml:pos>475870.657941715 7646278.39119481</gml:pos>
 </gml:Point>
