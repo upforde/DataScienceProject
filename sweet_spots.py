@@ -17,8 +17,12 @@ class ThreadWithReturnValue(Thread):
 
 # Importance thresholds (These are all subject to change)
 depth = 40                      # 40m under water
-proximity_area = 5000           # At least 5km away from anything
+proximity_area = 5000           # At least 5km away from fishing areas
 power_proximity = 50000         # Best if at most 50km away, but not a problem otherwise
+ankering_proximity = 500        # Best if it's at least 500m away from ankering areas
+# military_proximity = 5000       # Best if at least 5km awawy from any military areas
+coral_proximity = 5000          # At least 5km away from coral reaves
+incident_proximity = 5000       # At least 5km away from an incident cite
 
 # add more as more come in
 
@@ -101,25 +105,28 @@ def isUMT(lat, lon):
     return False
 
 # Open the datasets
+main = open("DataScience/DataScienceProject/sweet_spots.txt", "a")
 
-# TODO: Insert actual filepaths here!!!
-main = open("insert path to file here", "r")
-fish_data = open("insert path to file here", "r")
-depth_data = open("insert path to file here", "r")
-water_power_data = open("insert path to file here", "r")
-wind_power_data = open("insert path to file here", "r")
-
+fish_data = open("DataScience/DataScienceProject/processed data/processed_kv_eiendom_kompleks.gml", "r")
+depth_data = open("DataScience/DataScienceProject/processed data/processed_Depth", "r")
+incidents_data = open("DataScience/DataScienceProject/processed data/processed_vts_hendelser.gml", "r")
+coral_data = open("DataScience/DataScienceProject/processed data/processed_CoralReef", "r")
+water_power_data = open("DataScience/DataScienceProject/processed data/Vannkraft_Vannkraftverk.txt", "r")
+wind_power_data = open("DataScience/DataScienceProject/processed data/Vindkraft_Vindkraftanlegg.txt", "r")
+damn_data = open("DataScience/DataScienceProject/processed data/Vannkraft_DamPunkt.txt", "r")
+# ankering_data = open("DataScience/DataScienceProject/processed data/kyv_ankringsomraderflate.sos", "r")
+# military_nono_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryNoNoZones", "r")
+# military_training_zones = open("DataScience/DataScienceProject/processed data/processed_MilitaryTrainingZones", "r")
 # add more as more come in
 
 # Actual searching functions
-
 # Many of these functions can be written better, or at least more generically, but I really can't right now, too tired to think about that
 def look_for_fishing_sites(lat, lon):
     lines = fish_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
     for line in lines:
-        coords = line.split(", ")
+        coords = line.split(",")
         flat, flon = coords[0], coords[1]
         # Check if the coordinates are UMT, and if they are, convert to latlon
         if (isUMT(flat, flon)): flat, flon = utmToLatLng(flat, flon) 
@@ -139,7 +146,7 @@ def look_for_depth(lat, lon):
     # Check the fishing location database
     for line in lines:
         coords = line.split(", ")
-        dlat, dlon = coords[0], coords[1]
+        dlat, dlon = coords[3], coords[2]
         # Check if the coordinates are UMT, and if they are, convert to latlon
         if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
         # Calculate the distance between the sweet spot and the depth gauging place 
@@ -147,9 +154,45 @@ def look_for_depth(lat, lon):
         # If the distance is nearer than the nearest distance to date, then replace the distance and the depth with current values
         if distance < nearest_distance: 
             nearest_distance = distance
-            current_depth = coords[2]
+            current_depth = coords[1]
     # Returns the depth of the area that is the closest to the current sweet spot
     return current_depth
+
+def look_for_incidents(lat, lon):
+    lines = incidents_data.readlines()
+    nearest_distance = math.inf
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(",")
+        ilat, ilon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(ilat, ilon)): ilat, ilon = utmToLatLng(ilat, ilon) 
+        # Calculate the distance between the point and the incident site
+        distance = calculate_distance_in_latlong(lat, lon, ilat, ilon)
+        # If it's too near, based on the proximity attribute, then stop the function and return the proximity
+        if distance < incident_proximity: return distance
+        # If it's not too close, then keep finding the closest site
+        if distance < nearest_distance: nearest_distance = distance
+    # Return the distance to closest site so that a score can be calculated out of it
+    return nearest_distance
+
+def look_for_coral(lat, lon):
+    lines = coral_data.readlines()
+    nearest_distance = math.inf
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(",")
+        clat, clon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(clat, clon)): clat, clon = utmToLatLng(clat, clon) 
+        # Calculate the distance between the point and the coral reaves site
+        distance = calculate_distance_in_latlong(lat, lon, clat, clon)
+        # If it's too near, based on the proximity attribute, then stop the function and return the proximity
+        if distance < coral_proximity: return distance
+        # If it's not too close, then keep finding the closest site
+        if distance < nearest_distance: nearest_distance = distance
+    # Return the distance to closest site so that a score can be calculated out of it
+    return nearest_distance
 
 def look_for_water_power(lat, lon):
     lines = water_power_data.readlines()
@@ -181,6 +224,37 @@ def look_for_wind_power(lat, lon):
     # Return the distance to closest site so that a score can be calculated out of it
     return nearest_distance
 
+def look_for_damn_power(lat, lon):
+    lines = damn_data.readlines()
+    nearest_distance = math.inf
+    # Check the fishing location database
+    for line in lines:
+        coords = line.split(" ,")
+        dlat, dlon = coords[0], coords[1]
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
+        # Calculate the distance between the point and the dam power site
+        distance = calculate_distance_in_latlong(lat, lon, dlat, dlon)
+        if distance < nearest_distance: nearest_distance = distance
+    # Return the distance to closest site so that a score can be calculated out of it
+    return nearest_distance
+
+# def look_for_ankering(lat, lon):
+#     lines = ankering_data.readlines()
+#     for line in lines:
+#         return
+#     return
+
+# def look_for_military_nono(lat, lon):
+#     lines = military_nono_zones.readlines()
+#     newarest_distance = math.inf
+#     for line in lines:
+#         coords = line.split()
+#     return
+
+# def look_for_military_training(lat, lon):
+#     return
+
 # add more as they come in
 
 # Read the main file and check the points with the criteria
@@ -200,11 +274,29 @@ for line in lines:
     depth = ThreadWithReturnValue(target=look_for_depth, args=(lat, lon,))
     depth.start()
 
+    incidents = ThreadWithReturnValue(target=look_for_incidents, args=(lat, lon,))
+    incidents.start()
+
+    corals = ThreadWithReturnValue(target=look_for_coral, args=(lat, lon,))
+    corals.start()
+
     water_power = ThreadWithReturnValue(target=look_for_water_power, args=(lat, lon,))
     water_power.start()
 
     wind_power = ThreadWithReturnValue(target=look_for_wind_power, args=(lat, lon,))
     wind_power.start()
+
+    dam_power = ThreadWithReturnValue(target=look_for_damn_power, args=(lat, lon,))
+    dam_power.start()
+
+    # ankering = ThreadWithReturnValue(target=look_for_ankering, args=(lat, lon,))
+    # ankering.start()
+
+    # military_nono = ThreadWithReturnValue(target=look_for_military_nono, args=(lat, lon,))
+    # military_nono.start()
+
+    # military_training = ThreadWithReturnValue(target=look_for_military_training, args=(lat, lon,))
+    # military_training.start()
 
     # Calculate metrics
 
@@ -217,21 +309,30 @@ for line in lines:
 
     depth_score = depth.join()/depth if depth.join()/depth < 2 else 2
 
+    incident_score = incidents.join()/incident_proximity if incidents.join()/incident_proximity < 2 else 2
+
+    coral_score = corals.join()/coral_proximity if corals.join()/coral_proximity < 2 else 2
+
     water_power_score = 2 - water_power.join()/power_proximity
     if water_power_score < 0: water_power_score = 0
 
     wind_power_score = 2 - wind_power.join()/power_proximity
     if wind_power_score < 0: wind_power_score = 0
 
+    dam_power_score = 2 - dam_power.join()/power_proximity
+    if dam_power_score < 0: dam_power_score = 0
+
+    # ankering_score = something here
+    # military_nono_score = something here
+    # military_training_score = something here
+
     # This calculation takes the average of the results from the checks. The calculations are set up so that
     # result values less than 1 are bad, and values more than 1 are good for the spot.
-    overall_score = (fishing_score + depth_score + water_power_score + wind_power_score) / 4
+    overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score) / 7
 
     sweet_spots.append([lat, lon, overall_score])
 
-# Save the points in a new file
-potential_sweet_spot_locations = open("DataScience/DataScienceProject/potential_sweet_spots.txt", "a")
-
+# Overwrite the file, now with scores
 for spot in sweet_spots:
-    potential_sweet_spot_locations.write(spot)
-    potential_sweet_spot_locations.write("\n")
+    main.write(spot)
+    main.write("\n")
