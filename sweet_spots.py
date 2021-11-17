@@ -93,7 +93,7 @@ def isUMT(lat, lon):
 # Actual searching functions
 # Many of these functions can be written better, or at least more generically, but I really can't right now, too tired to think about that
 def look_for_fishing_sites(lat, lon):
-    fish_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_kv_eiendom_kompleks.gml", "r", encoding='utf-8-sig')
+    fish_data = open("processed data/processed_kv_eiendom_kompleks.gml", "r", encoding='utf-8-sig')
     lines = fish_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -110,7 +110,7 @@ def look_for_fishing_sites(lat, lon):
     return nearest_distance
 
 def look_for_depth(lat, lon):
-    depth_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_Depth", "r", encoding='utf-8-sig')
+    depth_data = open("processed data/processed_Depth", "r", encoding='utf-8-sig')
     lines = depth_data.readlines()
     nearest_distance = math.inf
     current_depth = 0
@@ -131,7 +131,7 @@ def look_for_depth(lat, lon):
     return current_depth
 
 def look_for_incidents(lat, lon):
-    incidents_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_vts_hendelser.gml", "r", encoding='utf-8-sig')
+    incidents_data = open("processed data/processed_vts_hendelser.gml", "r", encoding='utf-8-sig')
     lines = incidents_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -150,7 +150,7 @@ def look_for_incidents(lat, lon):
     return nearest_distance
 
 def look_for_coral(lat, lon):
-    coral_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/processed_CoralReef", "r", encoding='utf-8-sig')
+    coral_data = open("processed data/processed_CoralReef", "r", encoding='utf-8-sig')
     lines = coral_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -169,7 +169,7 @@ def look_for_coral(lat, lon):
     return nearest_distance
 
 def look_for_water_power(lat, lon):
-    water_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_Vannkraftverk.txt", "r", encoding='utf-8-sig')
+    water_power_data = open("processed data/Vannkraft_Vannkraftverk.txt", "r", encoding='utf-8-sig')
     lines = water_power_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -185,7 +185,7 @@ def look_for_water_power(lat, lon):
     return nearest_distance
 
 def look_for_wind_power(lat, lon):
-    wind_power_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vindkraft_Vindkraftanlegg.txt", "r", encoding='utf-8-sig')
+    wind_power_data = open("processed data/Vindkraft_Vindkraftanlegg.txt", "r", encoding='utf-8-sig')
     lines = wind_power_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -201,7 +201,7 @@ def look_for_wind_power(lat, lon):
     return nearest_distance
 
 def look_for_damn_power(lat, lon):
-    damn_data = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/processed data/Vannkraft_DamPunkt.txt", "r", encoding='utf-8-sig')
+    damn_data = open("processed data/Vannkraft_DamPunkt.txt", "r", encoding='utf-8-sig')
     lines = damn_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -238,7 +238,7 @@ def look_for_damn_power(lat, lon):
 # add more as they come in
 
 # Read the main file and check the points with the criteria
-main = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/sweet_spots.txt", "r", encoding='utf-8-sig')
+main = open("sweet_spots.txt", "r", encoding='utf-8-sig')
 lines = main.readlines()
 # Array that will be filled with the sweetspots in the main file and their scores
 sweet_spots = []
@@ -312,7 +312,7 @@ for line in lines:
     sweet_spots.append([lat, lon, overall_score])
 
 
-new = open("/home/bigdikdinko/Documents/NTNU/DataScience/DataScienceProject/results.txt", "w", encoding='utf-8-sig')
+new = open("results.txt", "w", encoding='utf-8-sig')
 # Overwrite the file, now with scores
 for spot in sweet_spots:
     new.write("%f, %f, %f" % (spot[0], spot[1], spot[2]))
