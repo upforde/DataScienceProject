@@ -308,7 +308,6 @@ def run_checks(lat, lon):
 
     # This calculation takes the average of the results from the checks. The calculations are set up so that
     # result values less than 1 are bad, and values more than 1 are good for the spot.
-    print(fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score)
     overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score) / 7
 
     return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, overall_score)
