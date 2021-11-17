@@ -13,7 +13,7 @@ ankering_proximity = 500        # Best if it's at least 500m away from ankering 
 # military_proximity = 5000       # Best if at least 5km awawy from any military areas
 coral_proximity = 5000          # At least 5km away from coral reaves
 incident_proximity = 5000       # At least 5km away from an incident cite
-distance_tolerance = 5000       # Tolerable distance up to 5km.
+distance_tolerance = 5000.0       # Tolerable distance up to 5km.
 
 # add more as more come in
 
@@ -228,17 +228,6 @@ def distance_between_two_points(lat1, lon1, lat2, lon2):
 
     return total_distance
 
-# https://openrouteservice.org/dev/#/api-ocs/v2/directions/{profile}/post
-def drive_between_two_points(lat1, lon1, lat2, lon2):
-    client = openrouteservice.Client(key='5b3ce3597851110001cf6248dd79866974e14a78a863e40eac2c20e0')
-    #set location coordinates in longitude,latitude order
-    coords = ((lon1,lat1),(lon2,lat2))
-    # call API
-    res = client.directions(coords)
-    # Get only distance
-    distance = str(round(res['routes'][0]['summary']['distance']/1000,1))
-    return distance
-
 # def look_for_ankering(lat, lon):
 #     ankering_data = open("DataScience/DataScienceProject/processed data/kyv_ankringsomraderflate.sos", "r", encoding='utf-8-sig')
 #     lines = ankering_data.readlines()
@@ -332,5 +321,12 @@ def run_checks(lat, lon):
     # This calculation takes the average of the results from the checks. The calculations are set up so that
     # result values less than 1 are bad, and values more than 1 are good for the spot.
     overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score + distance_score) / 8
+    #  print(lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score,  distance_score, overall_score)
+    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, distance_score, overall_score)
 
-    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, overall_score, distance_score)
+"""
+for line in lines:
+    coords = line.split(", ")
+    lat, lon = float(coords[0]), float(coords[1])
+    run_checks(lat, lon)
+"""
