@@ -267,11 +267,13 @@ def drive_between_two_points(lat1, lon1, lat2, lon2):
 main = open("sweet_spots.txt", "r", encoding='utf-8-sig')
 lines = main.readlines()
 # Array that will be filled with the sweetspots in the main file and their scores
-sweet_spots = []
 # Here relying on the point coordinates being one point per line
-for line in lines:
-    coords = line.split(", ")
-    lat, lon = float(coords[0]), float(coords[1])
+
+def run_checks(lat, lon):
+    '''
+    Takes in `lat` and `lon` of a point, and returns all of the things
+    '''
+
     if (isUMT(lat, lon)): lat, lon = utmToLatLng(lat, lon)
 
     #Run the checks here
@@ -337,14 +339,6 @@ for line in lines:
 
     # This calculation takes the average of the results from the checks. The calculations are set up so that
     # result values less than 1 are bad, and values more than 1 are good for the spot.
-    print(fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score)
     overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score) / 7
 
-    sweet_spots.append([lat, lon, overall_score])
-
-
-new = open("results.txt", "w", encoding='utf-8-sig')
-# Overwrite the file, now with scores
-for spot in sweet_spots:
-    new.write("%f, %f, %f" % (spot[0], spot[1], spot[2]))
-    new.write("\n")
+    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, overall_score)
