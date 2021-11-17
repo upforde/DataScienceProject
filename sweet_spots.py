@@ -276,7 +276,7 @@ def run_checks(lat, lon):
     if (isUMT(lat, lon)): lat, lon = utmToLatLng(lat, lon)
 
     #Run the checks here
-    pool = ThreadPool(processes=7)
+    pool = ThreadPool(processes=9)
 
     fishing = pool.apply_async(look_for_fishing_sites, (lat, lon))
 
@@ -314,15 +314,15 @@ def run_checks(lat, lon):
     # comment on them or explain them here. You gotto figure it out or ask me in person
     fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result, hq_dist_result, harbor_dist_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get(), hq_dist.get(), harbor_dist.get()
 
-    fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
+    fishing_score = 0 if fishing_result < proximity_area else fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
 
     depth_score = depth_result/depth_threshold if depth_result/depth_threshold < 2 else 2
 
     incident_score = incidents_result/incident_proximity if incidents_result/incident_proximity < 2 else 2
 
-    coral_score = corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
+    coral_score = 0 if corals_result < coral_proximity else corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
 
-    distance_score = (hq_dist + harbor_dist_result)/distance_tolerance if (hq_dist + harbor_dist_result)/distance_tolerance < 2 else 2
+    distance_score = (hq_dist_result + harbor_dist_result)/distance_tolerance if (hq_dist + harbor_dist_result)/distance_tolerance < 2 else 2
 
     water_power_score = 2 - water_power_result/power_proximity
     if water_power_score < 0: water_power_score = 0
