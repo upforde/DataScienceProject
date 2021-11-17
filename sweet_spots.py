@@ -1,6 +1,10 @@
 import math
 from multiprocessing.pool import ThreadPool
 
+import json
+from geopy import distance
+import requests
+
 # Importance thresholds (These are all subject to change)
 depth_threshold = 40                      # 40m under water
 proximity_area = 5000           # At least 5km away from fishing areas
@@ -216,6 +220,28 @@ def look_for_damn_power(lat, lon):
     # Return the distance to closest site so that a score can be calculated out of it
     return nearest_distance
 
+
+def distance_between_two_points(lat1, lon1, lat2, lon2):
+    starting_point = (str(lat1), str(lon1)) 
+    destination = (str(lat2), str(lon2))
+    total_distance = distance.distance(starting_point, destination).km
+
+    print(total_distance)
+    return total_distance
+
+# https://openrouteservice.org/dev/#/api-ocs/v2/directions/{profile}/post
+def drive_between_two_points(lat1, lon1, lat2, lon2):
+    client = openrouteservice.Client(key='5b3ce3597851110001cf6248dd79866974e14a78a863e40eac2c20e0')
+    # res = client.directions(coords)
+    #set location coordinates in longitude,latitude order
+    coords = ((lon1,lat1),(lon2,lat2))
+    #call API
+    res = client.directions(coords)
+    #test our response
+    distance = str(round(res['routes'][0]['summary']['distance']/1000,1))
+    print(distance)
+    return distance
+
 # def look_for_ankering(lat, lon):
 #     ankering_data = open("DataScience/DataScienceProject/processed data/kyv_ankringsomraderflate.sos", "r", encoding='utf-8-sig')
 #     lines = ankering_data.readlines()
@@ -264,6 +290,11 @@ for line in lines:
     wind_power = pool.apply_async(look_for_water_power, (lat, lon))
 
     dam_power = pool.apply_async(look_for_damn_power, (lat, lon))
+
+    # Just using Trondheim Havn and Equinor Resarch center for now.
+    hq_dist = distance_between_two_points(63.4278768, 10.3841791, 63.4388664 , 10.4760904)
+    harbor_dist = distance_between_two_points(63.4278768, 10.3841791, lat, lon)
+    total_dist = hq_dist + harbor_dist
 
     # ankering = ThreadWithReturnValue(target=look_for_ankering, args=(lat, lon))
     # ankering.start()
