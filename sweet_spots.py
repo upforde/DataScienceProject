@@ -13,6 +13,7 @@ ankering_proximity = 500        # Best if it's at least 500m away from ankering 
 # military_proximity = 5000       # Best if at least 5km awawy from any military areas
 coral_proximity = 5000          # At least 5km away from coral reaves
 incident_proximity = 5000       # At least 5km away from an incident cite
+distance_tolerance = 5000       # Tolerable distance up to 5km.
 
 # add more as more come in
 
@@ -232,14 +233,12 @@ def distance_between_two_points(lat1, lon1, lat2, lon2):
 # https://openrouteservice.org/dev/#/api-ocs/v2/directions/{profile}/post
 def drive_between_two_points(lat1, lon1, lat2, lon2):
     client = openrouteservice.Client(key='5b3ce3597851110001cf6248dd79866974e14a78a863e40eac2c20e0')
-    # res = client.directions(coords)
     #set location coordinates in longitude,latitude order
     coords = ((lon1,lat1),(lon2,lat2))
-    #call API
+    # call API
     res = client.directions(coords)
-    #test our response
+    # Get only distance
     distance = str(round(res['routes'][0]['summary']['distance']/1000,1))
-    print(distance)
     return distance
 
 # def look_for_ankering(lat, lon):
@@ -294,9 +293,8 @@ def run_checks(lat, lon):
     dam_power = pool.apply_async(look_for_damn_power, (lat, lon))
 
     # Just using Trondheim Havn and Equinor Resarch center for now.
-    hq_dist = distance_between_two_points(63.4278768, 10.3841791, 63.4388664 , 10.4760904)
-    harbor_dist = distance_between_two_points(63.4278768, 10.3841791, lat, lon)
-    total_dist = hq_dist + harbor_dist
+    hq_dist = pool.apply_async(distance_between_two_points, (63.4278768, 10.3841791, 63.4388664 , 10.4760904))
+    harbor_dist = pool.apply_async(distance_between_two_points, (63.4278768, 10.3841791, lat, lon))
 
     # ankering = ThreadWithReturnValue(target=look_for_ankering, args=(lat, lon))
     # ankering.start()
@@ -314,7 +312,7 @@ def run_checks(lat, lon):
     # Don't know atm if I should keep the thing 0-2 thing, can't come up with anything better right now tho
     # I can see several issues with the approach that I've come up with here, but just like Fermat, I won't
     # comment on them or explain them here. You gotto figure it out or ask me in person
-    fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get()
+    fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result, hq_dist_result, harbor_dist_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get(), hq_dist.get(), harbor_dist.get()
 
     fishing_score = fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
 
@@ -323,6 +321,8 @@ def run_checks(lat, lon):
     incident_score = incidents_result/incident_proximity if incidents_result/incident_proximity < 2 else 2
 
     coral_score = corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
+
+    distance_score = (hq_dist + harbor_dist_result)/distance_tolerance if (hq_dist + harbor_dist_result)/distance_tolerance < 2 else 2
 
     water_power_score = 2 - water_power_result/power_proximity
     if water_power_score < 0: water_power_score = 0
@@ -339,6 +339,6 @@ def run_checks(lat, lon):
 
     # This calculation takes the average of the results from the checks. The calculations are set up so that
     # result values less than 1 are bad, and values more than 1 are good for the spot.
-    overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score) / 7
+    overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score + distance_score) / 8
 
-    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, overall_score)
+    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, overall_score, distance_score)
