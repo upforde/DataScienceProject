@@ -2,6 +2,7 @@ import sys
 
 if len(sys.argv) < 2: 
     print("Please, write the name of the file you wish to process")
+    # text = input("prompt")
     exit(0)
 
 name = sys.argv[1].split("data/")
