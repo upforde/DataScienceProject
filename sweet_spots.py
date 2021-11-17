@@ -221,13 +221,11 @@ def look_for_damn_power(lat, lon):
     # Return the distance to closest site so that a score can be calculated out of it
     return nearest_distance
 
-
 def distance_between_two_points(lat1, lon1, lat2, lon2):
     starting_point = (str(lat1), str(lon1)) 
     destination = (str(lat2), str(lon2))
     total_distance = distance.distance(starting_point, destination).km
 
-    print(total_distance)
     return total_distance
 
 # https://openrouteservice.org/dev/#/api-ocs/v2/directions/{profile}/post
@@ -261,12 +259,6 @@ def drive_between_two_points(lat1, lon1, lat2, lon2):
 #     return
 
 # add more as they come in
-
-# Read the main file and check the points with the criteria
-main = open("sweet_spots.txt", "r", encoding='utf-8-sig')
-lines = main.readlines()
-# Array that will be filled with the sweetspots in the main file and their scores
-# Here relying on the point coordinates being one point per line
 
 def run_checks(lat, lon):
     '''
@@ -322,7 +314,7 @@ def run_checks(lat, lon):
 
     coral_score = 0 if corals_result < coral_proximity else corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
 
-    distance_score = (hq_dist_result + harbor_dist_result)/distance_tolerance if (hq_dist + harbor_dist_result)/distance_tolerance < 2 else 2
+    distance_score = (hq_dist_result + harbor_dist_result)/distance_tolerance if (hq_dist_result + harbor_dist_result)/distance_tolerance < 2 else 2
 
     water_power_score = 2 - water_power_result/power_proximity
     if water_power_score < 0: water_power_score = 0
