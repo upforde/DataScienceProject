@@ -339,11 +339,3 @@ def run_checks(lat, lon):
     overall_score = ( depth_score + fishing_score) #/ 8
     #  print(lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score,  distance_score, overall_score)
     return (lat, lon, fishing_score, depth_score, overall_score)
-    
-
-"""
-for line in lines:
-    coords = line.split(", ")
-    lat, lon = float(coords[0]), float(coords[1])
-    run_checks(lat, lon)
-"""
