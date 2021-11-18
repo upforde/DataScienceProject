@@ -7,12 +7,13 @@ import requests
 
 # Importance thresholds (These are all subject to change)
 depth_threshold = 40                      # 40m under water
+depth_wiggle = 10
 proximity_area = 500           # At least 500m away from fishing areas
-power_proximity = 50000         # Best if at most 50km away, but not a problem otherwise
+power_proximity = 10_000         # Best if at most 50km away, but not a problem otherwise
 ankering_proximity = 500        # Best if it's at least 500m away from ankering areas
 # military_proximity = 5000       # Best if at least 5km awawy from any military areas
-coral_proximity = 5000          # At least 5km away from coral reaves
-incident_proximity = 5000       # At least 5km away from an incident cite
+coral_proximity = 500          # At least 50m away from coral reaves
+incident_proximity = 500       # At least 1km away from an incident cite
 distance_tolerance = 5000.0       # Tolerable distance up to 5km.
 
 # add more as more come in
@@ -34,7 +35,7 @@ def calculate_distance_in_latlong(latA, lonA, latB, lonB):
 
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    return R * c
+    return R * c * 1000
 
 # Stolen from Stack Overflow https://stackoverflow.com/questions/343865/how-to-convert-from-utm-to-latlng-in-python-or-javascript
 def utmToLatLng(easting, northing, zone=33, northernHemisphere=True):
@@ -221,7 +222,7 @@ def look_for_damn_power(lat, lon):
 def distance_between_two_points(lat1, lon1, lat2, lon2):
     starting_point = (str(lat1), str(lon1)) 
     destination = (str(lat2), str(lon2))
-    total_distance = distance.distance(starting_point, destination).km
+    total_distance = distance.distance(starting_point, destination).m
 
     return total_distance
 
@@ -332,10 +333,34 @@ def run_checks(lat, lon):
     else: fishing_score = 0
 
     # Checking depth requirements
-    if (depth_result > depth_threshold + 10 or depth_result < depth_threshold - 10 ): depth_score = 0
+    if (depth_result > depth_threshold + depth_wiggle or depth_result < depth_threshold - depth_wiggle ): depth_score = 0
     else: depth_score = 1
 
-    
-    overall_score = ( depth_score + fishing_score) #/ 8
+    # Proximity to corals
+    if (corals_result > coral_proximity): corals_score = 1
+    else: corals_score = 0
+
+    # Incidents
+    if (incidents_result > incident_proximity): incidents_score = 1
+    else: incidents_score = 0
+
+    # Power 
+    if water_power_result < power_proximity : water_power_score = 1
+    else: water_power_score = 0
+
+    if wind_power_result < power_proximity : wind_power_score = 1
+    else: wind_power_score = 0
+
+    if dam_power_result < power_proximity : dam_power_score = 1
+    else: dam_power_score = 0
+
+    if water_power_score > 0 or wind_power_score > 0 or dam_power_score > 0:  
+        total_power_score = 1 
+    else: total_power_score = 0
+
+    # Distance
+    distance_score = 0 if (hq_dist_result + harbor_dist_result)/distance_tolerance < 1 else 1
+
+    overall_score = ( depth_score + fishing_score + corals_score + incidents_score + total_power_score + distance_score) 
     #  print(lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score,  distance_score, overall_score)
-    return (lat, lon, fishing_score, depth_score, overall_score)
+    return (lat, lon, fishing_score, depth_score, incidents_score, corals_score , total_power_score, distance_score, overall_score)
