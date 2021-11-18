@@ -255,7 +255,7 @@ def run_checks(lat, lon):
     if (isUMT(lat, lon)): lat, lon = utmToLatLng(lat, lon)
 
     #Run the checks here
-    pool = ThreadPool(processes=9)
+    pool = ThreadPool()
 
     fishing = pool.apply_async(look_for_fishing_sites, (lat, lon))
 
@@ -328,5 +328,7 @@ def run_checks(lat, lon):
     distance_score = 0 if (hq_dist_result + harbor_dist_result)/distance_tolerance < 1 else 1
 
     overall_score = ( depth_score + fishing_score + corals_score + incidents_score + total_power_score + distance_score) 
-    #  print(lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score,  distance_score, overall_score)
+
+    pool.terminate()
+    
     return (lat, lon, fishing_score, depth_score, incidents_score, corals_score , total_power_score, distance_score, overall_score)
