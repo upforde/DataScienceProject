@@ -115,15 +115,13 @@ def look_for_fishing_sites(lat, lon):
     return nearest_distance
 
 def look_for_depth(lat, lon):
-    depth_data = open("processed data/processed_depth", "r", encoding='utf-8-sig')
+    depth_data = open("processed data/processed_Depth", "r", encoding='utf-8-sig')
     lines = depth_data.readlines()
     nearest_distance = math.inf
     current_depth = 0
     # Check the fishing location database
     for line in lines:
-
         coords = line.rstrip().split(",")
-
         dlat, dlon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
         if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
@@ -145,7 +143,7 @@ def look_for_incidents(lat, lon):
         coords = line.split(",")
         ilat, ilon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
-        if (isUMT(ilat, ilon)): ilat, ilon = utmToLatLng(ilat, ilon) 
+        if (isUMT(ilat, ilon)): ilat, ilon = utmToLatLng(ilat, ilon)
         # Calculate the distance between the point and the incident site
         distance = calculate_distance_in_latlong(lat, lon, ilat, ilon)
         # If it's too near, based on the proximity attribute, then stop the function and return the proximity
@@ -156,7 +154,7 @@ def look_for_incidents(lat, lon):
     return nearest_distance
 
 def look_for_coral(lat, lon):
-    coral_data = open("processed data/processed_CoralReef", "r", encoding='utf-8-sig')
+    coral_data = open("processed data/processed_CoralReef", "r")
     lines = coral_data.readlines()
     nearest_distance = math.inf
     # Check the fishing location database
@@ -164,11 +162,9 @@ def look_for_coral(lat, lon):
         coords = line.split(",")
         clat, clon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
-        if (isUMT(clat, clon)): clat, clon = utmToLatLng(clat, clon) 
+        if (isUMT(clat, clon)): clat, clon = utmToLatLng(clat, clon)
         # Calculate the distance between the point and the coral reaves site
         distance = calculate_distance_in_latlong(lat, lon, clat, clon)
-        # If it's too near, based on the proximity attribute, then stop the function and return the proximity
-        if distance < coral_proximity: return distance
         # If it's not too close, then keep finding the closest site
         if distance < nearest_distance: nearest_distance = distance
     # Return the distance to closest site so that a score can be calculated out of it
@@ -183,7 +179,7 @@ def look_for_water_power(lat, lon):
         coords = line.split(", ")
         wlat, wlon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
-        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon) 
+        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon)
         # Calculate the distance between the point and the water power site
         distance = calculate_distance_in_latlong(lat, lon, wlat, wlon)
         if distance < nearest_distance: nearest_distance = distance
@@ -199,7 +195,7 @@ def look_for_wind_power(lat, lon):
         coords = line.split(", ")
         wlat, wlon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
-        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon) 
+        if (isUMT(wlat, wlon)): wlat, wlon = utmToLatLng(wlat, wlon)
         # Calculate the distance between the point and the wind power site
         distance = calculate_distance_in_latlong(lat, lon, wlat, wlon)
         if distance < nearest_distance: nearest_distance = distance
@@ -215,7 +211,7 @@ def look_for_damn_power(lat, lon):
         coords = line.split(", ")
         dlat, dlon = float(coords[0]), float(coords[1])
         # Check if the coordinates are UMT, and if they are, convert to latlon
-        if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
+        if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon)
         # Calculate the distance between the point and the dam power site
         distance = calculate_distance_in_latlong(lat, lon, dlat, dlon)
         if distance < nearest_distance: nearest_distance = distance
@@ -270,7 +266,7 @@ def run_checks(lat, lon):
 
     water_power = pool.apply_async(look_for_water_power, (lat, lon))
 
-    wind_power = pool.apply_async(look_for_water_power, (lat, lon))
+    wind_power = pool.apply_async(look_for_wind_power, (lat, lon))
 
     dam_power = pool.apply_async(look_for_damn_power, (lat, lon))
 
@@ -332,11 +328,10 @@ def run_checks(lat, lon):
 
     # NEW way
     # Fishing requirements
-    if (fishing_result < proximity_area): fishing_score = 1
+    if (fishing_result > proximity_area): fishing_score = 1
     else: fishing_score = 0
 
     # Checking depth requirements
-    print(depth_result)
     if (depth_result > depth_threshold + 10 or depth_result < depth_threshold - 10 ): depth_score = 0
     else: depth_score = 1
 
