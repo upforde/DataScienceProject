@@ -10,8 +10,8 @@ topRightCorner = ( 63.556504, 10.616752 )
 bottomLeftCorner = ( 63.456658, 10.256998 )
 
 # Granularity - how many squares to divide the region above into lat/lon - height/wdith
-chunksLat = 3
-chunksLon = 3          
+chunksLat = 10
+chunksLon = 10         
 
 # Monte Carlo parameters
 samplingPer = 10         # How many random points to sample within a given region
@@ -71,16 +71,16 @@ def MonteCarlo():
 
 
 chunks, chunkScores, results, sampleCoors, sampleScores = MonteCarlo()
-#print(sampleScores)
+print(sampleScores)
 
 def pseudocolor(val, minval=0, maxval=6):
     """ Convert value in the range minval...maxval to a color between red and green.
     """
 
-    f = (val-minval) / (maxval-minval)
-    r, g, b = 1-f, f, 0
+    f = ((val-minval) / (maxval-minval) )* 255
+    r, g, b = 255-f, f, 0
 
-    return int(255), int(128), int(10)
+    return int(r), int(g), int(b)
 
 print("Drawing map")
 
@@ -94,8 +94,9 @@ for chunk in chunks:
     chunk_bottom_right = (chunk[1][0], chunk[0][1])
 
     score = chunkScores[chunkIndex][-1]
-    color = '#%x%x%x' % pseudocolor(score)
+    color = '#%02x%02x%02x' % pseudocolor(score)
     
+
     # Adding chunks in
     m.add_child(folium.vector_layers.Polygon(locations=[chunk_top_left, chunk_top_right, chunk_bottom_right, chunk_bottom_left],popup = results[chunkIndex] , color='gray', fill_color=color))
 

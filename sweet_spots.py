@@ -7,13 +7,13 @@ import requests
 
 # Importance thresholds (These are all subject to change)
 depth_threshold = 40                      # 40m under water
-depth_wiggle = 10
+depth_wiggle = 15
 proximity_area = 500           # At least 500m away from fishing areas
 power_proximity = 10_000         # Best if at most 50km away, but not a problem otherwise
 ankering_proximity = 500        # Best if it's at least 500m away from ankering areas
 # military_proximity = 5000       # Best if at least 5km awawy from any military areas
-coral_proximity = 500          # At least 50m away from coral reaves
-incident_proximity = 500       # At least 1km away from an incident cite
+coral_proximity = 1000          # At least 50m away from coral reaves
+incident_proximity = 1000       # At least 1km away from an incident cite
 distance_tolerance = 5000.0       # Tolerable distance up to 5km.
 
 # add more as more come in
@@ -292,40 +292,6 @@ def run_checks(lat, lon):
     # I can see several issues with the approach that I've come up with here, but just like Fermat, I won't
     # comment on them or explain them here. You gotto figure it out or ask me in person
     fishing_result, depth_result, incidents_result, corals_result, water_power_result, wind_power_result, dam_power_result, hq_dist_result, harbor_dist_result = fishing.get(), depth.get(), incidents.get(), corals.get(), water_power.get(), wind_power.get(), dam_power.get(), hq_dist.get(), harbor_dist.get()
-
-    """
-    # OLD way
-
-    fishing_score = 0 if fishing_result < proximity_area else fishing_result/proximity_area if fishing_result/proximity_area < 2 else 2
-
-    depth_score = depth_result/depth_threshold if depth_result/depth_threshold < 2 else 2
-
-    incident_score = incidents_result/incident_proximity if incidents_result/incident_proximity < 2 else 2
-
-    coral_score = 0 if corals_result < coral_proximity else corals_result/coral_proximity if corals_result/coral_proximity < 2 else 2
-
-    distance_score = (hq_dist_result + harbor_dist_result)/distance_tolerance if (hq_dist_result + harbor_dist_result)/distance_tolerance < 2 else 2
-
-    water_power_score = 2 - water_power_result/power_proximity
-    if water_power_score < 0: water_power_score = 0
-
-    wind_power_score = 2 - wind_power_result/power_proximity
-    if wind_power_score < 0: wind_power_score = 0
-
-    dam_power_score = 2 - dam_power_result/power_proximity
-    if dam_power_score < 0: dam_power_score = 0
-    
-    # ankering_score = something here
-    # military_nono_score = something here
-    # military_training_score = something here
-
-    # This calculation takes the average of the results from the checks. The calculations are set up so that
-    # result values less than 1 are bad, and values more than 1 are good for the spot.
-    overall_score = (fishing_score + depth_score + incident_score + coral_score + water_power_score + wind_power_score + dam_power_score + distance_score) #/ 8
-    #  print(lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score,  distance_score, overall_score)
-    return (lat, lon, fishing_score, depth_score, incident_score, coral_score, water_power_score, wind_power_score, dam_power_score, distance_score, overall_score)
-
-    """
 
     # NEW way
     # Fishing requirements
