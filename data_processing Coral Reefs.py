@@ -10,8 +10,9 @@ if len(sys.argv) < 2:
 new_name = "processed_MilitaryTrainingZones" 
 new_file = open(new_name, "a")
 
-with open("MilitaryTrainingZones.gml", errors="ignore") as f:
+with open("Depth", errors="ignore") as f:
     lines = f.readlines()
+    odd = True
     for line in lines:
         # Template
         # if "" in line:
@@ -19,5 +20,10 @@ with open("MilitaryTrainingZones.gml", errors="ignore") as f:
 
         # Add other stuff that is ge
         # ared towards any data
-        if "<gml:posList>" in line:
-            new_file.write(line.split("gml:posList")[1][1:-2] + "\n")
+        if odd:
+            new_file.write(line.replace("\n", ","))
+            odd = False
+        else:
+            new_file.write(line)
+            odd = True
+

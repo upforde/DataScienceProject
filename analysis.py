@@ -14,7 +14,7 @@ chunksLat = 2
 chunksLon = 2          
 
 # Monte Carlo parameters
-samplingPer = 5         # How many random points to sample within a given region
+samplingPer = 10         # How many random points to sample within a given region
 calculateSTD = True             # Whether or not to calculate standard deviation
 
 # The MonteCarlo itself

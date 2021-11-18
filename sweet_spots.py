@@ -115,23 +115,24 @@ def look_for_fishing_sites(lat, lon):
     return nearest_distance
 
 def look_for_depth(lat, lon):
-    depth_data = open("processed data/processed_Depth", "r", encoding='utf-8-sig')
+    depth_data = open("processed data/processed_depth", "r", encoding='utf-8-sig')
     lines = depth_data.readlines()
     nearest_distance = math.inf
     current_depth = 0
     # Check the fishing location database
     for line in lines:
-        coords = line.split(", ")
-        if len(coords) > 3:
-            dlat, dlon = float(coords[3]), float(coords[2])
-            # Check if the coordinates are UMT, and if they are, convert to latlon
-            if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
-            # Calculate the distance between the sweet spot and the depth gauging place 
-            distance = calculate_distance_in_latlong(lat, lon, dlat, dlon)
-            # If the distance is nearer than the nearest distance to date, then replace the distance and the depth with current values
-            if distance < nearest_distance: 
-                nearest_distance = distance
-                current_depth = float(coords[1])
+
+        coords = line.rstrip().split(",")
+
+        dlat, dlon = float(coords[0]), float(coords[1])
+        # Check if the coordinates are UMT, and if they are, convert to latlon
+        if (isUMT(dlat, dlon)): dlat, dlon = utmToLatLng(dlat, dlon) 
+        # Calculate the distance between the sweet spot and the depth gauging place 
+        distance = calculate_distance_in_latlong(lat, lon, dlat, dlon)
+        # If the distance is nearer than the nearest distance to date, then replace the distance and the depth with current values
+        if distance < nearest_distance: 
+            nearest_distance = distance
+            current_depth = float(coords[2])
     # Returns the depth of the area that is the closest to the current sweet spot
     return current_depth
 
