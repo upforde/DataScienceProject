@@ -11,11 +11,11 @@ topRightCorner = ( 63.556504, 10.616752 )
 bottomLeftCorner = ( 63.456658, 10.256998 )
 
 # Granularity - how many squares to divide the region above into lat/lon - height/wdith
-chunksLat = 5
-chunksLon = 5         
+chunksLat = 10
+chunksLon = 10        
 
 # Monte Carlo parameters
-samplingPer = 10         # How many random points to sample within a given region
+samplingPer = 100         # How many random points to sample within a given region
 calculateSTD = True             # Whether or not to calculate standard deviation
 
 # The MonteCarlo itself
